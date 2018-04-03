@@ -17,12 +17,12 @@ class event (models.Model):
 		return self.title
 
 
-class times (models.Model):
-	start_time = models.DateTimeField()
-	end_time = models.DateTimeField()
-	duration = models.IntegerField()
-	event_id = models.ForeignKey(event)
-
-	class Meta:
-		unique_together = ("start_time", "end_time", "event_id")
+# class times (models.Model):
+# 	start_time = models.DateTimeField()
+# 	end_time = models.DateTimeField()
+# 	duration = models.IntegerField()
+# 	event_id = models.ForeignKey(event)
+#
+# 	class Meta:
+# 		unique_together = ("start_time", "end_time", "event_id")
 
