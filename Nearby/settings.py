@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ORIGIN_WHITELIST = True
+CORS_ORIGIN_WHITELIST = False
 
 # Application definition
 
