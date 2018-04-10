@@ -21,5 +21,11 @@ from mainview import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^events/', views.eventList.as_view()),
+    url(r'^events/single/', views.singleEventList.as_view()),
+   # url(r'^events/', views.eventList.as_view()),
+    url(r'^times/', views.timesList.as_view()),
+    url(r'^category/', views.categoryList.as_view()),
+    url(r'^upvotes/', views.upvotesList.as_view()),
+
+
 ]

@@ -23,17 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'rzzoe)b=@=+=$)j-vjxmrtky2po=5w*(qhomn7%hd9r#el&i53'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ['ec2-18-188-184-129.us-east-2.compute.amazonaws.com', 'localhost', '127.0.0.1']
-
-
-CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,15 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
     'rest_framework',
     'mainview',
 
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'Nearby.urls'
@@ -90,10 +80,10 @@ WSGI_APPLICATION = 'Nearby.wsgi.application'
 DATABASES = {
       'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nearby_db',
-        'USER': 'sunshine',
-        'PASSWORD': 'woofwoof',
-        'HOST': 'nearby-db-instance.czc9wuatwimq.us-east-2.rds.amazonaws.com',
+        'NAME': 'Nearby',
+        'USER': 'postgres',
+        'PASSWORD': 'Clover0616',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 
@@ -137,4 +127,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
