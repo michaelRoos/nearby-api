@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'Nearby.wsgi.application'
 DATABASES = {
       'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Nearby',
+        'NAME': 'NearbyDB',
         'USER': 'postgres',
-        'PASSWORD': 'Clover0616',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
     }

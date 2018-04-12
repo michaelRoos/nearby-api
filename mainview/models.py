@@ -59,7 +59,7 @@ class upvotes (models.Model):
         
 class categories (models.Model):
         name = models.CharField(max_length = 255)
-        parent = models.ForeignKey(event, on_delete = models.CASCADE)
+        parent = models.ForeignKey('self', on_delete = models.CASCADE, null = True, blank = True )
 
 class event_categories (models.Model):
         event_id = models.ForeignKey(event, on_delete = models.CASCADE)
