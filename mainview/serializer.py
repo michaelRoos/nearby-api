@@ -5,7 +5,8 @@ class eventSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = event
-		fields = ('title', 'description', 'location', 'time', 'upvote_count')
+		fields = '__all__'
+		#fields = ('pk','title', 'description', 'location', 'time', 'upvote_count')
 
 
 
