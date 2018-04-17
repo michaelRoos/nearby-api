@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from mainview.views import EventRudView, EventAPIView
+from mainview.views import *
 
 
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'event/create', EventAPIView.as_view(), name="event-create"),
+    url(r'event/list', EventAPIView.as_view(), name="event-create-and-list"),
     url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name="event-rud"),
-    url(r'^api/', include('mainview.urls')),
+    url(r'times/list', TimeAPIView.as_view(), name="event-create-and-list"),
+    url(r'times/(?P<pk>\d+)/', TimeRudView.as_view(), name="event-rud"),
+
 
     # url(r'^events/single/', views.singleEventList.as_view()),
     # url(r'^events/', views.eventList.as_view()),

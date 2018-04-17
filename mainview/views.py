@@ -36,19 +36,28 @@ class EventRudView(generics.RetrieveUpdateDestroyAPIView):
 		return event.objects.all();
 
 
+class TimeAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+	lookup_field 			= 'pk'
+	serializer_class		= timeSerializer
+
+	def get_queryset(self):
+		qs = times.objects.all();
+		query = self.request.GET.get("q")
+		if query is not None:
+			qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
+		return qs
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
+
+class TimeRudView(generics.RetrieveUpdateDestroyAPIView):
+	lookup_field 			= 'pk'
+	serializer_class		= timeSerializer
+
+	def get_queryset(self):
+		return event.objects.all();
 
 
-
-
-class timesList(APIView):
-
-	def get(self, request):
-		time = times.objects.all()
-		serializer = timeSerializer(time, many=True)
-		return Response(serializer.data)
-
-	def post(self):
-		pass
 
 class eventList(APIView):
 
