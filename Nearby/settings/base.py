@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'rzzoe)b=@=+=$)j-vjxmrtky2po=5w*(qhomn7%hd9r#el&i53'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
 
 ALLOWED_HOSTS = []
@@ -84,20 +83,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Nearby.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-      'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nearby_db',
-        'USER': 'sunshine',
-        'PASSWORD': 'woofwoof',
-        'HOST': 'nearby-db-instance.czc9wuatwimq.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
-    }
-
-}
 
 
 # Password validation
