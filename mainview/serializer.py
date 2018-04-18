@@ -2,6 +2,14 @@ from rest_framework import serializers
 from . models import *
 from mainview.models import users
 
+
+class signupSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = users
+		fields = ('username', 'password')
+
+
 class eventSerializer(serializers.ModelSerializer):
 
 	class Meta:
@@ -40,9 +48,3 @@ class singleEventSerializer(serializers.ModelSerializer):
 		fields = ('title', 'description', 'location', 'time', 'upvote_count', 'startTime') 
 
 
-class signupRequestSerializer(serializers.Serializer):
-	username = serializers.CharField(required=True)
-	password = serializers.CharField(required=True)
-
-	def create(self, validated_data):
-		return users.objects.create(**validated_data)
