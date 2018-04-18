@@ -23,7 +23,6 @@ import mainview.views as views
 urlpatterns = [
 	url(r'event/create', EventAPIView.as_view(), name = "event-create"),
 	url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name = "event-rud"),
-	url(r'signup', SignupAPIView.as_view(), name="signup")
 
 
     # url(r'^admin/', admin.site.urls),
