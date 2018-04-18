@@ -14,7 +14,7 @@ from .serializer import *
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     serializer_class = signupSerializer
-
+    queryset = users.objects.all()
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
