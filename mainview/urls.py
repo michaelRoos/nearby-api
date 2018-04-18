@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
-from mainview.views import EventRudView, EventAPIView
+from mainview.views import EventRudView, EventAPIView, SignupAPIView
+import mainview.views as views
 
 
 urlpatterns = [
 	url(r'event/create', EventAPIView.as_view(), name = "event-create"),
-	url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name = "event-rud")
+	url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name = "event-rud"),
+	url(r'signup', SignupAPIView.as_view(), name="signup")
 
 
     # url(r'^admin/', admin.site.urls),
