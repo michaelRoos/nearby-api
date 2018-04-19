@@ -6,7 +6,6 @@ from .models import *
 
 # Register your models here.
 admin.site.register(event)
-# admin.site.register(User)
 admin.site.register(zip_location)
 admin.site.register(images)
 admin.site.register(times)

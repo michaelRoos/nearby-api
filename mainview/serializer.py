@@ -3,12 +3,6 @@ from rest_framework import serializers
 from .models import *
 
 
-# class signupSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = users
-#         fields = ('email', 'password')
-
-
 class eventSerializer(serializers.ModelSerializer):
     class Meta:
         model = event

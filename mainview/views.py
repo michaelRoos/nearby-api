@@ -1,45 +1,20 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import CreateAPIView
+
 from rest_framework.views import APIView
 from django.db.models import Q
 from rest_framework.response import Response
-from rest_framework import status, permissions
 from rest_framework import generics, mixins
-from .models import *
 from .serializer import *
-
-
-@api_view(['POST'])
-def create_auth(request):
-    serialized = UserSerializer(data=request.data)
-    if serialized.is_valid():
-        User.objects.create_user(
-            serialized.init_data['email'],
-            serialized.init_data['username'],
-            serialized.init_data['password']
-        )
-        return Response(serialized.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
-#
-#
-# class CreateUserView(CreateAPIView):
-#
-#     model = get_user_model()
-#     permission_classes = [
-#         permissions.AllowAny # Or anon users can't register
-#     ]
-#     serializer_class = UserSerializer
+
 
 class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     lookup_field = 'pk'
