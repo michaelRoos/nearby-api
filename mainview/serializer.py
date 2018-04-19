@@ -1,12 +1,12 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import *
-from mainview.models import users
 
 
-class signupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = users
-        fields = ('email', 'password')
+# class signupSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = users
+#         fields = ('email', 'password')
 
 
 class eventSerializer(serializers.ModelSerializer):
@@ -42,3 +42,24 @@ class singleEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = event
         fields = ('title', 'description', 'location', 'time', 'upvote_count', 'startTime')
+
+UserModel = get_user_model()
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+
+        user = UserModel.objects.create(
+            username=validated_data['email']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
+    class Meta:
+        model = UserModel
+        fields=('email', 'password')

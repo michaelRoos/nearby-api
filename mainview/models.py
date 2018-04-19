@@ -1,9 +1,18 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.hashers import make_password
 
 
 # Create your models here.
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+
+
 class event(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=160)
@@ -18,22 +27,20 @@ class event(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class users(models.Model):
-    email = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.password = make_password(self.password)
-        super(users, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = "users"
-
-    def __str__(self):
-        return self.email
+# class users(AbstractBaseUser):
+#     email = models.CharField(max_length=255)
+#     password = models.CharField(max_length=255)
+#
+#     def save(self, *args, **kwargs):
+#         if not self.pk:
+#             self.password = make_password(self.password)
+#         super(users, self).save(*args, **kwargs)
+#
+#     class Meta:
+#         verbose_name_plural = "users"
+#
+#     def __str__(self):
+#         return self.email
 
 
 class zip_location(models.Model):

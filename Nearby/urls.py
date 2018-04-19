@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from mainview.views import *
+from rest_framework_jwt.views import obtain_jwt_token
+
 
 
 
@@ -26,7 +28,8 @@ urlpatterns = [
     url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name="event-rud"),
     url(r'times/list', TimeAPIView.as_view(), name="event-create-and-list"),
     url(r'times/(?P<pk>\d+)/', TimeRudView.as_view(), name="event-rud"),
-    url(r'signup', SignupAPIView.as_view(), name="signup")
+    url(r'signup', SignupAPIView.as_view(), name="signup"),
+    url(r'^api-token-auth/', obtain_jwt_token),
 
     # url(r'^events/single/', views.singleEventList.as_view()),
     # url(r'^events/', views.eventList.as_view()),
