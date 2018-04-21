@@ -2,7 +2,9 @@
 
 ### Creating users
 Endpoint: /signup/
+
 Request type: POST
+
 Parameters:
 * Email address
 * Password
@@ -21,7 +23,9 @@ HTTP 201 Created
 ```
 ### Logging in
 Endpoint: /api-token-auth/
+
 Request type: POST
+
 Parameters:
 * Email address
 * Password
