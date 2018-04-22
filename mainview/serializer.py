@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import *
+import datetime
 
 
 class eventSerializer(serializers.ModelSerializer):
@@ -22,9 +23,18 @@ class categorySerializer(serializers.ModelSerializer):
 
 
 class upvotesSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        upvote = upvotes.objects.create(
+            user_email=validated_data['user_email'],
+            event_id=validated_data['event_id'],
+            time=datetime.datetime.now())
+        upvote.save()
+        return upvote
+
     class Meta:
         model = upvotes
-        fields = ('__all__')  # hmmm what are we gonna return here cause its not gonna work
+        fields = ('user_email','event_id')  # hmmm what are we gonna return here cause its not gonna work
 
 
 class singleEventSerializer(serializers.ModelSerializer):
