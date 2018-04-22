@@ -10,6 +10,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import generics, mixins, viewsets
 from .serializer import *
+from .models import *
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     serializer_class = UserSerializer
@@ -18,11 +19,22 @@ class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
         return self.create(request, *args, **kwargs)
 
 
+class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = upvotesSerializer
+
+    def post(self, request, *args, **kwargs):
+        old_count = event.objects.filter(pk=request.data['event_id']).get().upvote_count
+        event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count+ 1)
+        return self.create(request, *args, **kwargs)
+
+
 class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin, viewsets.ViewSet):
     lookup_field = 'pk'
     serializer_class = eventSerializer
     permission_classes_by_action = {'post': [IsAuthenticated],
                                     'default': [AllowAny]}
+
     def get_queryset(self):
         qs = event.objects.all();
         query = self.request.GET.get("q")
