@@ -8,13 +8,15 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from django.db.models import Q
 from rest_framework.response import Response
-from rest_framework import generics, mixins, viewsets
+from rest_framework import generics, mixins, viewsets, status
 from .serializer import *
 from .models import *
+
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
@@ -24,9 +26,16 @@ class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
     serializer_class = upvotesSerializer
 
     def post(self, request, *args, **kwargs):
-        old_count = event.objects.filter(pk=request.data['event_id']).get().upvote_count
-        event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count+ 1)
-        return self.create(request, *args, **kwargs)
+        if upvotes.objects.filter(user_email=request.data['user_email'],
+                                  event_id=request.data['event_id']).count() == 0:  # if the user has not upvoted
+                                                                                    # event already
+            old_count = event.objects.filter(
+                pk=request.data['event_id']).get().upvote_count  # update upvote count for event
+            event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count + 1)
+            self.create(request, *args, **kwargs)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin, viewsets.ViewSet):
