@@ -61,6 +61,16 @@ MIDDLEWARE = [
 
 ]
 
+# Make JWT Auth the default authentication mechanism for Django
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
+
+# Enables django-rest-auth to use JWT tokens instead of regular tokens.
+REST_USE_JWT = True
+
 ROOT_URLCONF = 'Nearby.urls'
 
 TEMPLATES = [

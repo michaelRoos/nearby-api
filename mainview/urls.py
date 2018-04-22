@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
-from mainview.views import EventRudView, EventAPIView, SignupAPIView
+from mainview.views import EventRudView, EventAPIView
 import mainview.views as views
 
 
