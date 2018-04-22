@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'times/list', TimeAPIView.as_view(), name="event-create-and-list"),
     url(r'times/(?P<pk>\d+)/', TimeRudView.as_view(), name="event-rud"),
     url(r'signup', SignupAPIView.as_view(), name="signup"),
-    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api-token-auth', obtain_jwt_token),
+    url(r'upvote', UpvoteAPIView.as_view(), name="upvote"),
 
     # url(r'^events/single/', views.singleEventList.as_view()),
     # url(r'^events/', views.eventList.as_view()),
