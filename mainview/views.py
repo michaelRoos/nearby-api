@@ -37,59 +37,66 @@ class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
+class EventAPIView(generics.ListAPIView):
+	lookup_field = 'pk'
+	serializer_class = eventSerializerView
 
-class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin, viewsets.ViewSet):
-    lookup_field = 'pk'
-    serializer_class = eventSerializer
-    permission_classes_by_action = {'post': [IsAuthenticated],
-                                    'default': [AllowAny]}
-
-    def get_queryset(self):
-        qs = event.objects.all();
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
-        return qs
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-    def get_permissions(self):
-        try:
-            return [permission() for permission in self.permission_classes_by_action[self.action]]
-        except KeyError:
-            return [permission() for permission in self.permission_classes_by_action['default']]
+	def get_queryset(self):
+		qs = event.objects.all()
+		categories_query = self.request.GET.get("categories")
+		search_query = self.request.GET.get("search")
+		print(categories_query)
+		if search_query is not None:
+			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
+		if categories_query is not None:
+			temp=2
+		return qs
 
 
-class EventRudView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'pk'
-    serializer_class = eventSerializer
-
-    def get_queryset(self):
-        return event.objects.all();
 
 
-class TimeAPIView(generics.ListAPIView, mixins.CreateModelMixin):
-    lookup_field = 'pk'
-    serializer_class = timeSerializer
+class EventRudView(generics.RetrieveUpdateDestroyAPIView, mixins.CreateModelMixin):
+	lookup_field = 'pk'
+	serializer_class = eventSerializerCrud
 
-    def get_queryset(self):
-        qs = times.objects.all();
-        query = self.request.GET.get("q")
-        if query is not None:
-            qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
-        return qs
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+	def get_queryset(self):
+		return event.objects.all()
+
+# class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin, viewsets.ViewSet):
+#     lookup_field = 'pk'
+#     serializer_class = eventSerializer
+#     permission_classes_by_action = {'post': [IsAuthenticated],
+#                                     'default': [AllowAny]}
+#
+#     def get_queryset(self):
+#         qs = event.objects.all();
+#         query = self.request.GET.get("q")
+#         if query is not None:
+#             qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
+#         return qs
+#
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+#
+#     def get_permissions(self):
+#         try:
+#             return [permission() for permission in self.permission_classes_by_action[self.action]]
+#         except KeyError:
+#             return [permission() for permission in self.permission_classes_by_action['default']]
+#
+#
+# class EventRudView(generics.RetrieveUpdateDestroyAPIView):
+#     lookup_field = 'pk'
+#     serializer_class = eventSerializer
+#
+#     def get_queryset(self):
+#         return event.objects.all();
 
 
-class TimeRudView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'pk'
-    serializer_class = timeSerializer
 
-    def get_queryset(self):
-        return event.objects.all();
 
 
 class eventList(APIView):

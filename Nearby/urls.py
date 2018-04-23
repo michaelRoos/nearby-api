@@ -24,10 +24,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'event/list', EventAPIView.as_view({'post':'post'}), name="event-create-and-list"),
+    url(r'event/list', EventAPIView.as_view(), name="event-create-and-list"),
     url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name="event-rud"),
-    url(r'times/list', TimeAPIView.as_view(), name="event-create-and-list"),
-    url(r'times/(?P<pk>\d+)/', TimeRudView.as_view(), name="event-rud"),
     url(r'signup', SignupAPIView.as_view(), name="signup"),
     url(r'^api-token-auth', obtain_jwt_token),
     url(r'upvote', UpvoteAPIView.as_view(), name="upvote"),
