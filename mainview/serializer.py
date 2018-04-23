@@ -28,18 +28,16 @@ class upvotesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = upvotes
-        fields = ('user_email','event_id')  # hmmm what are we gonna return here cause its not gonna work
+        fields = ('user_email', 'event_id')  # hmmm what are we gonna return here cause its not gonna work
 
 
 UserModel = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
-
         user = UserModel.objects.create(
             username=validated_data['email']
         )
@@ -50,20 +48,40 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields=('email', 'password')
+        fields = ('email', 'password')
 
 
 class eventSerializerView(serializers.ModelSerializer):
-	# user = UserSerializer()
-	categories = categorySerializer(many =True)
+    # user = UserSerializer()
+    categories = categorySerializer(many=True)
 
-	class Meta:
-		model = event
-		# fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user', 'categories')
-		fields = ('__all__')
+    class Meta:
+        model = event
+        # fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user', 'categories')
+        fields = ('__all__')
+
 
 class eventSerializerCrud(serializers.ModelSerializer):
 
-	class Meta:
-		model = event
-		fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')
+    categories = serializers.SlugRelatedField(many=True, read_only=True, slug_field="title")
+
+    def create(self, validated_data):
+        m_event = event.objects.create(
+            title=validated_data["title"],
+            location=validated_data["location"],
+            description=validated_data["description"],
+            user_email=validated_data["user_email"]
+        )
+        category = validated_data['categories']
+        while category is not None:
+            m_event.categories.add(category.parent)
+            category = category.parent
+        m_event.save()
+
+        return m_event
+
+    class Meta:
+        model = event
+        fields = (
+        'id', 'title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count', 'start_time',
+        'end_time', 'user_email', 'categories')
