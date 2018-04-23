@@ -52,15 +52,29 @@ class EventAPIView(generics.ListAPIView):
 			temp=2
 		return qs
 
-
-
-
-class EventRudView(generics.RetrieveUpdateDestroyAPIView, mixins.CreateModelMixin):
+class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	lookup_field = 'pk'
 	serializer_class = eventSerializerCrud
 
+	def get_queryset(self):
+		qs = event.objects.all()
+		categories_query = self.request.GET.get("categories")
+		search_query = self.request.GET.get("search")
+		if search_query is not None:
+			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
+		if categories_query is not None:
+			temp=2
+		return qs
+
+
 	def post(self, request, *args, **kwargs):
 		return self.create(request, *args, **kwargs)
+
+
+class EventRudView(generics.RetrieveUpdateDestroyAPIView):
+	lookup_field = 'pk'
+	serializer_class = eventSerializerCrud
+
 
 	def get_queryset(self):
 		return event.objects.all()

@@ -24,6 +24,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'event/create', EventCreateView.as_view(), name="event-create-and-list"),
     url(r'event/list', EventAPIView.as_view(), name="event-create-and-list"),
     url(r'event/(?P<pk>\d+)/', EventRudView.as_view(), name="event-rud"),
     url(r'signup', SignupAPIView.as_view(), name="signup"),
