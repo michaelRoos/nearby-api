@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import *
+import datetime
 
 
 class eventSerializer(serializers.ModelSerializer):
@@ -9,33 +10,26 @@ class eventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class timeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = times
-        fields = ('start_time', 'end_time')
-
-
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = categories
-        fields = ('category')
+        fields = ('title',)
 
 
 class upvotesSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        upvote = upvotes.objects.create(
+            user_email=validated_data['user_email'],
+            event_id=validated_data['event_id'],
+            time=datetime.datetime.now())
+        upvote.save()
+        return upvote
+
     class Meta:
         model = upvotes
-        fields = ('__all__')  # hmmm what are we gonna return here cause its not gonna work
+        fields = ('user_email','event_id')  # hmmm what are we gonna return here cause its not gonna work
 
-
-class singleEventSerializer(serializers.ModelSerializer):
-    startTime = timeSerializer(many=True, read_only=True)
-
-    # event = eventSerializer(many = True, read_only = True)
-    # category = categorySerializer(many = True, read_only = True)
-
-    class Meta:
-        model = event
-        fields = ('title', 'description', 'location', 'time', 'upvote_count', 'startTime')
 
 UserModel = get_user_model()
 
@@ -57,3 +51,19 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields=('email', 'password')
+
+
+class eventSerializerView(serializers.ModelSerializer):
+	# user = UserSerializer()
+	categories = categorySerializer(many =True)
+
+	class Meta:
+		model = event
+		# fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user', 'categories')
+		fields = ('__all__')
+
+class eventSerializerCrud(serializers.ModelSerializer):
+
+	class Meta:
+		model = event
+		fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')

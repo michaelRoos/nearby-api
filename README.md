@@ -1,9 +1,9 @@
 # Nearby API Documentation
 
 ### Creating users
-Endpoint: /signup/
+Endpoint: `/signup/`
 
-Request type: POST
+Request type: `POST`
 
 Parameters:
 * Email address
@@ -22,9 +22,9 @@ Expected response:
 HTTP 201 Created
 ```
 ### Logging in
-Endpoint: /api-token-auth/
+Endpoint: `/api-token-auth/`
 
-Request type: POST
+Request type: `POST`
 
 Parameters:
 * Email address
@@ -51,3 +51,27 @@ To access protected URLs, first obtain an authorization token (see "Logging in")
 ```
 Authorization: JWT <token>
 ```
+
+### Upvoting events
+Endpoint: `/upvote/`
+
+Request type: `POST`
+
+Parameters:
+* Email address
+* Event id
+
+Request body:
+```
+{
+    "user_email": "example@gmail.com"
+    "event_id": "1270"
+}
+```
+
+Expected response:
+```
+HTTP 204 No Content
+```
+
+If a user attempts to upvote a post more than once, `HTTP 403 Forbidden` will be returned
