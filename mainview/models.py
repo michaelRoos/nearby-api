@@ -33,34 +33,13 @@ from django.contrib.postgres.fields import JSONField
 from django.template.backends import django
 
 
-class images(models.Model):
-    image_key = models.IntegerField()  # primary key
-    img_file = models.BinaryField()
-    upload_time = models.DateTimeField()
-    user_email = models.CharField(max_length=255)
+class file(models.Model):
+  file = models.FileField(blank=False, null=False)
+  timestamp = models.DateTimeField(auto_now_add=True)
+  user_email = models.CharField(max_length=255)
 
-    class Meta:
-        verbose_name_plural = "images"
-
-    def __str__(self):
-        return self.image_key
-
-
-# class times(models.Model):
-#     start_time = models.DateTimeField()
-#     end_time = models.DateTimeField()
-#     duration = models.IntegerField()
-#     event_id = models.ForeignKey(event, related_name='timeName', on_delete=models.CASCADE)
-#
-#     class Meta:
-#         verbose_name_plural = "times"
-#         unique_together = ("start_time", "end_time", "event_id")
-#
-#     def __str__(self):
-#         return str(self.start_time) + " " + str(self.end_time)
-
-
-
+  class Meta:
+      verbose_name_plural = "images"
 
 
 class categories(models.Model):
@@ -73,16 +52,6 @@ class categories(models.Model):
     def __str__(self):
         return self.title
 
-
-# class event_categories(models.Model):
-#     event_id = models.ForeignKey(event, on_delete=models.CASCADE)
-#     category = models.ForeignKey(categories, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         verbose_name_plural = "event_categories"
-#
-#     def __str__(self):
-#         return str(self.category) + " " + str(self.event_id)
 
 class event (models.Model):
     title = models.CharField(max_length=20)
@@ -97,6 +66,7 @@ class event (models.Model):
     start_time = models.DateTimeField(auto_now=True)
     end_time = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(categories)
+    images = models.ManyToManyField(file)
 
     class Meta:
         verbose_name_plural = "events"

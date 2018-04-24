@@ -9,6 +9,10 @@ class eventSerializer(serializers.ModelSerializer):
         model = event
         fields = '__all__'
 
+class fileSerializer(serializers.ModelSerializer):
+  class Meta():
+    model = file
+    fields = ('__all__')
 
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,7 +59,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class eventSerializerView(serializers.ModelSerializer):
 	# user = UserSerializer()
-	categories = categorySerializer(many =True)
+	categories = categorySerializer(many = True)
+	images = fileSerializer(many = True)
 
 	class Meta:
 		model = event
@@ -66,4 +71,6 @@ class eventSerializerCrud(serializers.ModelSerializer):
 
 	class Meta:
 		model = event
-		fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')
+		fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories', 'images')
+
+

@@ -17,6 +17,8 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from mainview.views import *
 from rest_framework_jwt.views import obtain_jwt_token
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -30,13 +32,9 @@ urlpatterns = [
     url(r'signup', SignupAPIView.as_view(), name="signup"),
     url(r'^api-token-auth', obtain_jwt_token),
     url(r'upvote', UpvoteAPIView.as_view(), name="upvote"),
-
-    # url(r'^events/single/', views.singleEventList.as_view()),
-    # url(r'^events/', views.eventList.as_view()),
-    # url(r'^times/', views.timesList.as_view()),
-    # url(r'^category/', views.categoryList.as_view()),
-    # url(r'^upvotes/', views.upvotesList.as_view()),
-
-
+    url(r'^image/upload$', FileCreateView.as_view(), name='file-upload'),
+    url(r'^image/list', FileAPIView.as_view(), name='file-upload'),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
