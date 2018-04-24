@@ -63,19 +63,22 @@ class eventSerializerView(serializers.ModelSerializer):
 
 class eventSerializerCrud(serializers.ModelSerializer):
 
-    categories = serializers.SlugRelatedField(many=True, read_only=True, slug_field="title")
+    categories = serializers.SlugRelatedField(many=True, queryset=categories.objects, slug_field="title")
 
     def create(self, validated_data):
         m_event = event.objects.create(
             title=validated_data["title"],
             location=validated_data["location"],
             description=validated_data["description"],
-            user_email=validated_data["user_email"]
+            user_email=validated_data["user_email"],
         )
-        category = validated_data['categories']
+        category = categories.objects.filter(title=validated_data['categories'][0]).first()
         while category is not None:
-            m_event.categories.add(category.parent)
-            category = category.parent
+            m_event.categories.add(category)
+            if category is category.parent:
+                category = None
+            else:
+                category = category.parent
         m_event.save()
 
         return m_event
