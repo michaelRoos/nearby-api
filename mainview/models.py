@@ -60,15 +60,14 @@ class event (models.Model):
     long = models.CharField(max_length=10)
     zipcode = models.CharField(max_length=10, default=16802)
     user_email = models.CharField(max_length=160)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now_add=True)
-    comments = JSONField(null=True)
-    upvote_count = models.IntegerField(default = 0)
-    start_time = models.DateTimeField(auto_now=True)
-    end_time = models.DateTimeField(auto_now=True)
-    planned_event = models.BooleanField()
+    comments = JSONField(null=True, blank=True)
+    upvote_count = models.IntegerField(default = 0, blank=True)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    planned_event = models.BooleanField(default=False)
     categories = models.ManyToManyField(categories)
-    images = models.ManyToManyField(file)
+    images = models.ManyToManyField(file, blank=True)
 
     class Meta:
         verbose_name_plural = "events"

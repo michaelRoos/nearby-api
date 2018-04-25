@@ -92,10 +92,18 @@ class eventSerializerCrud(serializers.ModelSerializer):
 	def create(self, validated_data):
 		m_event = event.objects.create(
 			title=validated_data["title"],
-			location=validated_data["location"],
 			description=validated_data["description"],
 			user_email=validated_data["user_email"],
+			lat=validated_data["lat"],
+			long=validated_data["long"],
+			zipcode=validated_data["zipcode"],
+			planned_event=validated_data["planned_event"]
 		)
+		try:
+			m_event.start_time = validated_data["start_time"]
+			m_event.end_time = validated_data["end_time"]
+		except KeyError:
+			pass
 		for category_title in validated_data['categories']:
 			category = categories.objects.filter(title=category_title).first()
 			while category is not None:
@@ -112,4 +120,4 @@ class eventSerializerCrud(serializers.ModelSerializer):
 
 	class Meta:
 		model = event
-		fields = ('id','title', 'description', 'lat', 'long', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories', 'images')
+		fields = ('id','title', 'description', 'lat', 'long', 'zipcode', 'time_stamp' , 'start_time', 'end_time', 'user_email', 'categories', 'planned_event', 'images')
