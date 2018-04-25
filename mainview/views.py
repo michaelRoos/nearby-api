@@ -59,6 +59,7 @@ class EventAPIView(generics.ListAPIView):
 class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	lookup_field = 'pk'
 	serializer_class = eventSerializerCrud
+	permission_classes = (IsAuthenticated,)
 
 	def get_queryset(self):
 		qs = event.objects.all()
