@@ -87,7 +87,7 @@ class eventSerializerView(serializers.ModelSerializer):
 class eventSerializerCrud(serializers.ModelSerializer):
 
 	categories = serializers.SlugRelatedField(many=True, queryset=categories.objects, slug_field="title")
-	images = fileSerializer(many=True)
+
 
 	def create(self, validated_data):
 		m_event = event.objects.create(
