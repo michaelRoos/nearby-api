@@ -56,7 +56,8 @@ class categories(models.Model):
 class event (models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=160)
-    location = models.CharField(max_length=20)
+    lat = models.CharField(max_length=10)
+    long = models.CharField(max_length=10)
     zipcode = models.CharField(max_length=10, default=16802)
     user_email = models.CharField(max_length=160)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -65,6 +66,7 @@ class event (models.Model):
     upvote_count = models.IntegerField(default = 0)
     start_time = models.DateTimeField(auto_now=True)
     end_time = models.DateTimeField(auto_now=True)
+    planned_event = models.BooleanField()
     categories = models.ManyToManyField(categories)
     images = models.ManyToManyField(file)
 

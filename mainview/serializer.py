@@ -9,10 +9,30 @@ class eventSerializer(serializers.ModelSerializer):
 		model = event
 		fields = '__all__'
 
+
+
 class fileSerializer(serializers.ModelSerializer):
 	class Meta():
 		model = file
 		fields = ('__all__')
+
+
+	def create(self, validated_data):
+		image = file.objects.create(
+			user_email=validated_data['user_email'],
+			file=validated_data['file'],
+			timestamp=datetime.datetime.now())
+		image.save()
+		print(validated_data)
+		try:
+			event_id = validated_data['event_id']
+			m_event = event.objects.filter(id=event_id).first()
+			if(m_event is not None):
+				m_event.images.add(image)
+				m_event.save
+		except:
+			pass
+		return image
 
 class categorySerializer(serializers.ModelSerializer):
 	class Meta:
@@ -67,6 +87,7 @@ class eventSerializerView(serializers.ModelSerializer):
 class eventSerializerCrud(serializers.ModelSerializer):
 
 	categories = serializers.SlugRelatedField(many=True, queryset=categories.objects, slug_field="title")
+	images = fileSerializer(many=True)
 
 	def create(self, validated_data):
 		m_event = event.objects.create(
@@ -83,10 +104,12 @@ class eventSerializerCrud(serializers.ModelSerializer):
 					category = None
 				else:
 					category = category.parent
+
+
 		m_event.save()
 
 		return m_event
 
 	class Meta:
 		model = event
-		fields = ('id','title', 'description', 'location', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories', 'images')
+		fields = ('id','title', 'description', 'lat', 'long', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories', 'images')

@@ -141,3 +141,5 @@ venv.bak/
 Nearby/settings/development.py
 
 Nearby/media
+
+mainview/migrations

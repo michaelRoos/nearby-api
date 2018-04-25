@@ -49,11 +49,10 @@ class EventAPIView(generics.ListAPIView):
 		qs = event.objects.all()
 		categories_query = self.request.GET.get("categories")
 		search_query = self.request.GET.get("search")
-		print(categories_query)
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			temp = 2
+			pass
 		return qs
 
 
@@ -77,7 +76,7 @@ class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 
 class EventRudView(generics.RetrieveUpdateDestroyAPIView):
 	lookup_field = 'pk'
-	serializer_class = eventSerializerCrud
+	serializer_class = eventSerializerView
 
 	def get_queryset(self):
 		return event.objects.all()
@@ -100,6 +99,7 @@ class FileCreateView(APIView):
 		return Response(serializer.data)
 
 	def post(self, request, *args, **kwargs):
+		print(request.data)
 		file_serializer = fileSerializer(data=request.data)
 		if file_serializer.is_valid():
 			file_serializer.save()

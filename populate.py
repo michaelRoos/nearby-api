@@ -45,7 +45,9 @@ for i in range(len(level1)):
 temp_event = event()
 temp_event.title = "Hub Carnival"
 temp_event.description = 'Spring festival on the hub lawn with inflatables and food.'
-temp_event.location = '40.797767,-77.860518'
+temp_event.lat = '40.797938'
+temp_event.long = '-77.860283'
+temp_event.planned_event = False
 temp_event.zipcode = 18601
 temp_event.user_email = "abc0@psu.edu"
 temp_event.comments = {"Michael":"This was fun"}
@@ -60,7 +62,9 @@ temp_event.save()
 temp_event = event()
 temp_event.title = "Basketball Game"
 temp_event.description = 'Come support penn state basketball against Michigan at 7:00PM.'
-temp_event.location = '40.797856,-77.860182'
+temp_event.lat = '40.797938'
+temp_event.long = '-77.860283'
+temp_event.planned_event = False
 temp_event.zipcode = 18601
 temp_event.user_email = "abc0@psu.edu"
 temp_event.comments = {"Michael":"Great Game"}
@@ -74,7 +78,9 @@ temp_event.save()
 temp_event = event()
 temp_event.title = "Free Pizza With SPA"
 temp_event.description = 'Celebrate the coming of spring with free pizza on the hub lawn. Now until 4PM.'
-temp_event.location = '40.797938,-77.860283'
+temp_event.lat = '40.797938'
+temp_event.long = '-77.860283'
+temp_event.planned_event = False
 temp_event.zipcode = 18601
 temp_event.user_email = "abc1@psu.edu"
 temp_event.comments = {"Michael":"This was fun"}
@@ -87,7 +93,9 @@ temp_event.save()
 temp_event = event()
 temp_event.title = "Resume Review"
 temp_event.description = 'Come get your resume reviewed by advising experts in preparation for the career fair.'
-temp_event.location = '40.797094,-77.860632'
+temp_event.lat = '40.797938'
+temp_event.long = '-77.860283'
+temp_event.planned_event = False
 temp_event.zipcode = 18601
 temp_event.user_email = "abc2@psu.edu"
 temp_event.comments = {"Michael":"Very Helpful","Arjun":"I learned a lot"}
