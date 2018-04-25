@@ -11,31 +11,35 @@ from rest_framework.response import Response
 from rest_framework import generics, mixins, viewsets, status
 from .serializer import *
 from .models import *
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+	serializer_class = UserSerializer
+	queryset = User.objects.all()
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
 
 
 class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = upvotesSerializer
+	permission_classes = (IsAuthenticated,)
+	serializer_class = upvotesSerializer
 
-    def post(self, request, *args, **kwargs):
-        if upvotes.objects.filter(user_email=request.data['user_email'],
-                                  event_id=request.data['event_id']).count() == 0:  # if the user has not upvoted
-                                                                                    # event already
-            old_count = event.objects.filter(
-                pk=request.data['event_id']).get().upvote_count  # update upvote count for event
-            event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count + 1)
-            self.create(request, *args, **kwargs)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+	def post(self, request, *args, **kwargs):
+		if upvotes.objects.filter(user_email=request.data['user_email'],
+								  event_id=request.data['event_id']).count() == 0:  # if the user has not upvoted
+			# event already
+			old_count = event.objects.filter(
+				pk=request.data['event_id']).get().upvote_count  # update upvote count for event
+			event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count + 1)
+			self.create(request, *args, **kwargs)
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		else:
+			return Response(status=status.HTTP_403_FORBIDDEN)
+
 
 class EventAPIView(generics.ListAPIView):
 	lookup_field = 'pk'
@@ -45,12 +49,12 @@ class EventAPIView(generics.ListAPIView):
 		qs = event.objects.all()
 		categories_query = self.request.GET.get("categories")
 		search_query = self.request.GET.get("search")
-		print(categories_query)
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			temp=2
+			pass
 		return qs
+
 
 class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	lookup_field = 'pk'
@@ -63,9 +67,8 @@ class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			temp=2
+			temp = 2
 		return qs
-
 
 	def post(self, request, *args, **kwargs):
 		return self.create(request, *args, **kwargs)
@@ -73,85 +76,53 @@ class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 
 class EventRudView(generics.RetrieveUpdateDestroyAPIView):
 	lookup_field = 'pk'
-	serializer_class = eventSerializerCrud
-
+	serializer_class = eventSerializerView
 
 	def get_queryset(self):
 		return event.objects.all()
 
-# class EventAPIView(generics.ListAPIView, mixins.CreateModelMixin, viewsets.ViewSet):
-#     lookup_field = 'pk'
-#     serializer_class = eventSerializer
-#     permission_classes_by_action = {'post': [IsAuthenticated],
-#                                     'default': [AllowAny]}
-#
-#     def get_queryset(self):
-#         qs = event.objects.all();
-#         query = self.request.GET.get("q")
-#         if query is not None:
-#             qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
-#         return qs
-#
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-#
-#     def get_permissions(self):
-#         try:
-#             return [permission() for permission in self.permission_classes_by_action[self.action]]
-#         except KeyError:
-#             return [permission() for permission in self.permission_classes_by_action['default']]
-#
-#
-# class EventRudView(generics.RetrieveUpdateDestroyAPIView):
-#     lookup_field = 'pk'
-#     serializer_class = eventSerializer
-#
-#     def get_queryset(self):
-#         return event.objects.all();
+class FileAPIView(generics.ListAPIView):
+	lookup_field = 'pk'
+	serializer_class = fileSerializer
 
+	def get_queryset(self):
+		qs = file.objects.all()
+		return qs
 
+class FileCreateView(APIView):
+	parser_classes = (MultiPartParser, FormParser)
+	permission_classes = (IsAuthenticated,)
 
+	def get(self, request):
+		files = file.objects.all()
+		serializer = fileSerializer(files, many=True)
+		return Response(serializer.data)
 
-
-class eventList(APIView):
-
-    def get(self, request):
-        events = event.objects.all()
-        serializer = eventSerializer(events, many=True)
-        return Response(serializer.data)
-
-    def post(self):
-        pass
+	def post(self, request, *args, **kwargs):
+		print(request.data)
+		file_serializer = fileSerializer(data=request.data)
+		if file_serializer.is_valid():
+			file_serializer.save()
+			return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class categoryList(APIView):
+	def get(self, request):
+		category = categories.objects.all()
+		serializer = categorySerializer(category, many=True)
+		return Response(serializer.data)
 
-    def get(self, request):
-        category = categories.objects.all()
-        serializer = categorySerializer(category, many=True)
-        return Response(serializer.data)
-
-    def post(self):
-        pass
+	def post(self):
+		pass
 
 
 class upvotesList(APIView):
+	def get(self, request):
+		upvote = upvotes.objects.all()
+		serializer = upvotesSerializer(upvote, many=True)
+		return Response(serializer.data)
 
-    def get(self, request):
-        upvote = upvotes.objects.all()
-        serializer = upvotesSerializer(upvote, many=True)
-        return Response(serializer.data)
-
-    def post(self):
-        pass
-
-
-class singleEventList(APIView):
-
-    def get(self, request):
-        singleEvents = event.objects.all()
-        serializer = singleEventSerializer(singleEvents, many=True)
-        return Response(serializer.data)
-
-    def post(self):
-        pass
+	def post(self):
+		pass

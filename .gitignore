@@ -139,3 +139,7 @@ venv.bak/
 .mypy_cache/
 
 Nearby/settings/development.py
+
+Nearby/media
+
+mainview/migrations
