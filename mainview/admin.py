@@ -6,6 +6,6 @@ from .models import *
 
 # Register your models here.
 admin.site.register(event)
-admin.site.register(images)
 admin.site.register(upvotes)
 admin.site.register(categories)
+admin.site.register(file)
