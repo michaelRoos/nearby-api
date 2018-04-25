@@ -63,9 +63,9 @@ class event (models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True)
     comments = JSONField(null=True, blank=True)
     upvote_count = models.IntegerField(default = 0, blank=True)
-    start_time = models.DateTimeField(blank=True)
-    end_time = models.DateTimeField(blank=True)
-    planned_event = models.BooleanField()
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    planned_event = models.BooleanField(default=False)
     categories = models.ManyToManyField(categories)
     images = models.ManyToManyField(file, blank=True)
 
