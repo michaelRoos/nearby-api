@@ -57,19 +57,13 @@ class EventAPIView(generics.ListAPIView):
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			pass
+			query_split = categories_query.split(',')
+			for cat in query_split:
+				cat_formated = cat.capitalize()
+				print(cat_formated)
+				qs = qs.filter(categories__title=cat_formated)
 		return qs
 
-class EventSingleView(generics.ListAPIView):
-	lookup_field = 'pk'
-	serializer_class = eventSerializerView
-
-	def get_queryset(self):
-		qs = event.objects.all()
-		pk = self.kwargs['pk']
-		if pk is not None:
-			qs = qs.filter(pk=pk)
-		return qs
 
 class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	lookup_field = 'pk'
@@ -79,11 +73,16 @@ class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	def get_queryset(self):
 		qs = event.objects.all()
 		categories_query = self.request.GET.get("categories")
+		print(categories_query)
 		search_query = self.request.GET.get("search")
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			temp = 2
+			query_split = categories_query.split(',')
+			print(query_split)
+			for cat in query_split:
+				cat_formated = cat.capitalize()
+				qs = qs.filter(categories__title__in=cat_formated)
 		return qs
 
 	def post(self, request, *args, **kwargs):
@@ -111,7 +110,7 @@ class FileCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	serializer_class = fileSerializer
 
 	parser_classes = (MultiPartParser, FormParser)
-	# permission_classes = (IsAuthenticated,)
+	permission_classes = (IsAuthenticated,)
 
 	def get_queryset(self):
 		qs = file.objects.all()
@@ -149,7 +148,7 @@ class upvotesList(APIView):
 
 
 class CommentCreateView(generics.ListAPIView, mixins.CreateModelMixin):
-	# permission_classes = (IsAuthenticated,)
+	permission_classes = (IsAuthenticated,)
 	lookup_field = 'pk'
 	serializer_class = commentSerializer
 
