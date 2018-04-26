@@ -52,7 +52,11 @@ class EventAPIView(generics.ListAPIView):
 		if search_query is not None:
 			qs = qs.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 		if categories_query is not None:
-			pass
+			categories = categories_query.split(',')
+			for category in categories:
+
+				qs = qs.filter(categories__title__in=category)
+				pass
 		return qs
 
 class EventSingleView(generics.ListAPIView):
