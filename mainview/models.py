@@ -1,5 +1,7 @@
 import datetime
+import uuid
 
+import os
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 
@@ -32,8 +34,13 @@ from django.contrib.postgres.fields import JSONField
 #         return self.zipcode
 from django.template.backends import django
 
+from Nearby.settings.base import MEDIA_ROOT
 
 
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join(MEDIA_ROOT, filename)
 
 
 class categories(models.Model):
@@ -89,7 +96,7 @@ class comment(models.Model):
         return str(self.name) + " : " + str(self.comment)
 
 class file(models.Model):
-  file = models.FileField(blank=False, null=False)
+  file = models.FileField(upload_to=get_file_path, blank=False, null=False)
   timestamp = models.DateTimeField(auto_now_add=True)
   user_email = models.CharField(max_length=255)
   event_id = models.ForeignKey(event, related_name='event_images', on_delete=models.CASCADE)

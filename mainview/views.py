@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from django.shortcuts import render
 
@@ -115,14 +116,8 @@ class FileCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 		qs = file.objects.all()
 		return qs
 
-
 	def post(self, request, *args, **kwargs):
-		file_serializer = fileSerializer(data=request.data)
-		if file_serializer.is_valid():
-			file_serializer.save()
-			return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-		else:
-			return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		return self.create(request, args, kwargs)
 
 
 class categoryList(APIView):
