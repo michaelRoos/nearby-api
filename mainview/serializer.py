@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from Nearby.settings.base import MEDIA_ROOT
+from Nearby.settings.base import MEDIA_ROOT, BASE_DIR
 from .models import *
 import datetime
 
@@ -26,7 +26,7 @@ class fileSerializer(serializers.ModelSerializer):
 	def to_representation(self, obj):
 		return {
 			'id': obj.id,
-			'file': os.environ.get("MEDIA_URL") + obj.file,
+			'file': os.environ.get("HOST_URL") + obj.file.url,
 			'timestamp': obj.timestamp,
 			'user_email': obj.user_email,
 			'event_id': str(obj.event_id)
