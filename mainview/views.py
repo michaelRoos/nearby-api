@@ -36,14 +36,14 @@ class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
 				pk=request.data['event_id']).get().upvote_count  # update upvote count for event
 			event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count + 1)
 			self.create(request, *args, **kwargs)
-			return Response({"is_upvote": True}, status=status.HTTP_204_NO_CONTENT)
+			return Response({"is_upvote": True}, status=status.HTTP_202_ACCEPTED)
 		else:
 			old_count = event.objects.filter(
 				pk=request.data['event_id']).get().upvote_count
 			event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count - 1)
 			upvotes.objects.filter(user_email=request.data['user_email'],
 								  event_id=request.data['event_id']).delete()
-			return Response({"is_upvote": False}, status=status.HTTP_204_NO_CONTENT)
+			return Response({"is_upvote": False}, status=status.HTTP_202_ACCEPTED)
 
 
 class EventAPIView(generics.ListAPIView):
