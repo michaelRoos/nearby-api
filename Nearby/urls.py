@@ -27,7 +27,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/$', admin.site.urls),
     url(r'^event/create/$', EventCreateView.as_view(), name="event-create"),
-    url(r'^event/list/$', EventAPIView.as_view(), name="event-list"),
+    url(r'^event/list/', EventAPIView.as_view(), name="event-list"),
     url(r'^event/(?P<pk>\d+)/$', EventSingleView.as_view(), name="event-single"),
     # url(r'event/(?P<pk>\d+)', EventRudView.as_view(), name="event-single"),
     url(r'^signup/$', SignupAPIView.as_view(), name="signup"),
