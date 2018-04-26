@@ -60,7 +60,6 @@ class EventAPIView(generics.ListAPIView):
 			query_split = categories_query.split(',')
 			for cat in query_split:
 				cat_formated = cat.capitalize()
-				print(cat_formated)
 				qs = qs.filter(categories__title=cat_formated)
 		return qs
 
