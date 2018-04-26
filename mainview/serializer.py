@@ -10,6 +10,11 @@ class eventSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
+class commentSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = comment
+		fields = ('__all__')
+
 
 class fileSerializer(serializers.ModelSerializer):
 	class Meta():
@@ -21,17 +26,9 @@ class fileSerializer(serializers.ModelSerializer):
 		image = file.objects.create(
 			user_email=validated_data['user_email'],
 			file=validated_data['file'],
-			timestamp=datetime.datetime.now())
+			timestamp=datetime.datetime.now(),
+			event_id = validated_data['event_id'])
 		image.save()
-		print(validated_data)
-		try:
-			event_id = validated_data['event_id']
-			m_event = event.objects.filter(id=event_id).first()
-			if(m_event is not None):
-				m_event.images.add(image)
-				m_event.save
-		except:
-			pass
 		return image
 
 class categorySerializer(serializers.ModelSerializer):
@@ -77,12 +74,12 @@ class UserSerializer(serializers.ModelSerializer):
 class eventSerializerView(serializers.ModelSerializer):
 
 	categories = categorySerializer(many=True)
-	images = fileSerializer(many = True)
+	event_images = fileSerializer(read_only=True, many=True)
+	event_comment = commentSerializer(read_only=True, many=True)
 
 	class Meta:
 		model = event
-		fields = ('__all__')
-
+		fields = ('id','title', 'description', 'event_images', 'event_comment', 'lat', 'lng', 'zipcode', 'time_stamp', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')
 
 class eventSerializerCrud(serializers.ModelSerializer):
 
@@ -90,12 +87,11 @@ class eventSerializerCrud(serializers.ModelSerializer):
 
 
 	def create(self, validated_data):
-		m_event = event.objects.create(
-			title=validated_data["title"],
-			location=validated_data["location"],
-			description=validated_data["description"],
-			user_email=validated_data["user_email"],
-		)
+		validated_data_no_cat = validated_data.copy()
+		print("val data" + str(validated_data))
+		validated_data_no_cat.pop('categories')
+		print("val data no cat" + str(validated_data_no_cat))
+		m_event = event.objects.create(**validated_data_no_cat)
 		for category_title in validated_data['categories']:
 			category = categories.objects.filter(title=category_title).first()
 			while category is not None:
@@ -104,12 +100,9 @@ class eventSerializerCrud(serializers.ModelSerializer):
 					category = None
 				else:
 					category = category.parent
-
-
 		m_event.save()
-
 		return m_event
 
 	class Meta:
 		model = event
-		fields = ('id','title', 'description', 'lat', 'long', 'zipcode', 'time_stamp', 'comments', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories', 'images')
+		fields = ('id','title', 'description','lat', 'lng', 'zipcode', 'time_stamp', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')
