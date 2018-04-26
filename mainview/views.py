@@ -55,6 +55,16 @@ class EventAPIView(generics.ListAPIView):
 			pass
 		return qs
 
+class EventSingleView(generics.ListAPIView):
+	lookup_field = 'pk'
+	serializer_class = eventSerializerView
+
+	def get_queryset(self):
+		qs = event.objects.all()
+		pk = self.kwargs['pk']
+		if pk is not None:
+			qs = qs.filter(pk=pk)
+		return qs
 
 class EventCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 	lookup_field = 'pk'
@@ -90,17 +100,20 @@ class FileAPIView(generics.ListAPIView):
 		qs = file.objects.all()
 		return qs
 
-class FileCreateView(APIView):
-	parser_classes = (MultiPartParser, FormParser)
-	permission_classes = (IsAuthenticated,)
+class FileCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 
-	def get(self, request):
-		files = file.objects.all()
-		serializer = fileSerializer(files, many=True)
-		return Response(serializer.data)
+	lookup_field = 'pk'
+	serializer_class = fileSerializer
+
+	parser_classes = (MultiPartParser, FormParser)
+	# permission_classes = (IsAuthenticated,)
+
+	def get_queryset(self):
+		qs = file.objects.all()
+		return qs
+
 
 	def post(self, request, *args, **kwargs):
-		print(request.data)
 		file_serializer = fileSerializer(data=request.data)
 		if file_serializer.is_valid():
 			file_serializer.save()
@@ -127,3 +140,17 @@ class upvotesList(APIView):
 
 	def post(self):
 		pass
+
+
+
+class CommentCreateView(generics.ListAPIView, mixins.CreateModelMixin):
+	# permission_classes = (IsAuthenticated,)
+	lookup_field = 'pk'
+	serializer_class = commentSerializer
+
+	def get_queryset(self):
+		qs = comment.objects.all()
+		return qs
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
