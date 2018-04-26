@@ -46,9 +46,8 @@ class categories(models.Model):
     def __str__(self):
         return self.title
 
-
 class event (models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=60)
     description = models.CharField(max_length=160)
     lat = models.CharField(max_length=10)
     lng = models.CharField(max_length=10)
@@ -66,7 +65,6 @@ class event (models.Model):
     def __str__(self):
         return self.title
 
-
 class upvotes(models.Model):
     user_email = models.CharField(max_length=255)
     event_id = models.ForeignKey(event, on_delete=models.CASCADE)
@@ -77,7 +75,6 @@ class upvotes(models.Model):
 
     def __str__(self):
         return str(self.user_email) + " " + str(self.event_id)
-
 
 class comment(models.Model):
     name = models.CharField(max_length=255)

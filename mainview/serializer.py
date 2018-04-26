@@ -91,9 +91,7 @@ class eventSerializerCrud(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		validated_data_no_cat = validated_data.copy()
-		print("val data" + str(validated_data))
 		validated_data_no_cat.pop('categories')
-		print("val data no cat" + str(validated_data_no_cat))
 		m_event = event.objects.create(**validated_data_no_cat)
 		for category_title in validated_data['categories']:
 			category = categories.objects.filter(title=category_title).first()

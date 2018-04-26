@@ -13,7 +13,7 @@ Protected: no
 
 Request type: `POST`
 
-Parameters:
+Request parameters:
 * Email address
 * Password
 
@@ -36,7 +36,7 @@ Protected: no
 
 Request type: `POST`
 
-Parameters:
+Request parameters:
 * Email address
 * Password
 
@@ -48,6 +48,9 @@ Request body:
 }
 ```
 
+Response parameters:
+* Token
+
 Expected response:
 ```
 HTTP 200 Ok
@@ -56,14 +59,14 @@ HTTP 200 Ok
 }
 ```
 
-### Upvoting events
+### Upvoting events/removing upvotes
 Endpoint: `/upvote/`
 
 Protected: yes
 
 Request type: `POST`
 
-Parameters:
+Request parameters:
 * Email address
 * Event id
 
@@ -75,12 +78,19 @@ Request body:
 }
 ```
 
+Response parameters:
+* is_upvote - True if the user's action added a vote, False if the user's action took away a vote
 Expected response:
 ```
-HTTP 204 No Content
+HTTP 202 Accepted
+{
+    "is_upvote": True
+}
 ```
 
-If a user attempts to upvote a post more than once, `HTTP 403 Forbidden` will be returned
+The request for creating and removing upvotes is the exact same. The backend decides what action depending on if the user has already upvoted the event or not.
+
+
 
 ### Creating events
 Endpoint: `/event/create/`
@@ -89,7 +99,7 @@ Protected: yes
 
 Request type: `POST`
 
-Parameters:
+Request parameters:
 * Title
 * Description
 * Latitude
