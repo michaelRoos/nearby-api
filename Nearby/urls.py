@@ -26,17 +26,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'event/create', EventCreateView.as_view(), name="event-create"),
-    url(r'event/list', EventAPIView.as_view(), name="event-list"),
-    # url(r'event/(?P<pk>\d+)', EventSingleView.as_view(), name="event-single"),
-    url(r'event/(?P<pk>\d+)', EventRudView.as_view(), name="event-single"),
-    url(r'signup', SignupAPIView.as_view(), name="signup"),
-    url(r'^api-token-auth', obtain_jwt_token),
-    url(r'upvote', UpvoteAPIView.as_view(), name="upvote"),
-    url(r'^image/upload', FileCreateView.as_view(), name='file-upload'),
-    url(r'^image/list', FileAPIView.as_view(), name='file-upload'),
-    url(r'^comment/create', CommentCreateView.as_view(), name='comment-create'),
-
+    url(r'^event/create/', EventCreateView.as_view(), name="event-create"),
+    url(r'^event/list/', EventAPIView.as_view(), name="event-list"),
+    url(r'^event/(?P<pk>\d+)/', EventSingleView.as_view(), name="event-single"),
+    # url(r'event/(?P<pk>\d+)', EventRudView.as_view(), name="event-single"),
+    url(r'^signup/', SignupAPIView.as_view(), name="signup"),
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^upvote/', UpvoteAPIView.as_view(), name="upvote"),
+    url(r'^image/upload/', FileCreateView.as_view(), name='file-upload'),
+    url(r'^image/list/', FileAPIView.as_view(), name='file-upload'),
+    url(r'^comment/create/', CommentCreateView.as_view(), name='comment-create'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
