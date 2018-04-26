@@ -38,7 +38,12 @@ class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
 			self.create(request, *args, **kwargs)
 			return Response(status=status.HTTP_204_NO_CONTENT)
 		else:
-			return Response(status=status.HTTP_403_FORBIDDEN)
+			old_count = event.objects.filter(
+				pk=request.data['event_id']).get().upvote_count
+			event.objects.filter(pk=request.data['event_id']).update(upvote_count=old_count - 1)
+			upvotes.objects.filter(user_email=request.data['user_email'],
+								  event_id=request.data['event_id']).delete()
+			return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class EventAPIView(generics.ListAPIView):
