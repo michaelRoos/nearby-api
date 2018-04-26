@@ -88,6 +88,8 @@ HTTP 202 Accepted
 }
 ```
 
+The request for creating and removing upvotes is the exact same. The backend decides what action depending on if the user has already upvoted the event or not.
+
 
 
 ### Creating events
