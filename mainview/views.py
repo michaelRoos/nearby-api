@@ -22,7 +22,8 @@ class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
 	queryset = User.objects.all()
 
 	def post(self, request, *args, **kwargs):
-		return self.create(request, *args, **kwargs)
+		self.create(request, *args, **kwargs)
+		return Response(status=status.HTTP_201_CREATED)
 
 
 class UpvoteAPIView(generics.ListAPIView, mixins.CreateModelMixin):
