@@ -117,7 +117,12 @@ class FileCreateView(generics.ListAPIView, mixins.CreateModelMixin):
 		return qs
 
 	def post(self, request, *args, **kwargs):
-		return self.create(request, args, kwargs)
+		serializer = fileSerializer(data = request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			return Response(serializer.errors)
 
 
 class categoryList(APIView):
