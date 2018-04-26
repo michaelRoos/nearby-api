@@ -36,7 +36,6 @@ urlpatterns = [
     url(r'^image/upload/$', FileCreateView.as_view(), name='file-upload'),
     url(r'^image/list/$', FileAPIView.as_view(), name='file-upload'),
     url(r'^comment/create/$', CommentCreateView.as_view(), name='comment-create'),
-
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

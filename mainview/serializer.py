@@ -81,6 +81,9 @@ class eventSerializerView(serializers.ModelSerializer):
 		model = event
 		fields = ('id','title', 'description', 'event_images', 'event_comment', 'lat', 'lng', 'zipcode', 'time_stamp', 'upvote_count' , 'start_time', 'end_time', 'user_email', 'categories')
 
+
+
+
 class eventSerializerCrud(serializers.ModelSerializer):
 
 	categories = serializers.SlugRelatedField(many=True, queryset=categories.objects, slug_field="title")
