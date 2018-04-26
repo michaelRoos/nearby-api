@@ -1,14 +1,16 @@
+import random
+
 from mainview.models import *
-
-
 
 categories.objects.all().delete()
 comment.objects.all().delete()
 file.objects.all().delete()
 event.objects.all().delete()
 
+
+#category creation
 all = categories()
-all.title="All"
+all.title = "All"
 all.save()
 
 list = ["Athletics", "Food", "Animals", "Fundraiser", "Professional", "Music"]
@@ -21,14 +23,14 @@ for title in list:
 	temp.save()
 	level1.append(temp)
 
-list =[
-			['Clubs','Varsity','Football','Soccer','Hockey','Volleyball','Basketball'],
-			['Pizza','Dessert','Vegan','Vegetarian'],
-			['Dogs','Cats'],
-			['Charity','Club','Nonprofit'],
-			['Information','Career Fair','Development','Resume Review','Interview Prep'],
-			['Concerts','Street Performance','Alternative','Classic','Rock','Pop','Hip-Hop/Rap']
-		]
+list = [
+	['Clubs', 'Varsity', 'Football', 'Soccer', 'Hockey', 'Volleyball', 'Basketball'],
+	['Pizza', 'Dessert', 'Vegan', 'Vegetarian'],
+	['Dogs', 'Cats'],
+	['Charity', 'Club', 'Nonprofit'],
+	['Information', 'Career Fair', 'Development', 'Resume Review', 'Interview Prep'],
+	['Concerts', 'Street Performance', 'Alternative', 'Classic', 'Rock', 'Pop', 'Hip-Hop/Rap']
+]
 for i in range(len(level1)):
 	parent = level1[i]
 	children = list[i]
@@ -37,6 +39,7 @@ for i in range(len(level1)):
 		temp.title = title
 		temp.parent = parent
 		temp.save()
+
 
 
 
@@ -57,6 +60,8 @@ temp_event.upvote_count = 0
 temp_event.save()
 temp_event.categories.add(categories.objects.all().filter(title__icontains='All')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Food')[0])
+temp_event.start_time = None
+temp_event.end_time = None
 temp_event.save()
 
 
@@ -75,6 +80,8 @@ temp_event.save()
 temp_event.categories.add(categories.objects.all().filter(title__icontains='All')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Athl')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Bask')[0])
+temp_event.start_time = None
+temp_event.end_time = None
 temp_event.save()
 
 temp_event = event()
@@ -91,6 +98,8 @@ temp_event.save()
 temp_event.categories.add(categories.objects.all().filter(title__icontains='All')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Food')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Pizza')[0])
+temp_event.start_time = None
+temp_event.end_time = None
 temp_event.save()
 
 temp_event = event()
@@ -107,7 +116,20 @@ temp_event.save()
 temp_event.categories.add(categories.objects.all().filter(title__icontains='All')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Athl')[0])
 temp_event.categories.add(categories.objects.all().filter(title__icontains='Bask')[0])
+temp_event.start_time = None
+temp_event.end_time = None
 temp_event.save()
+
+
+
+parent = level1[i]
+children = list[i]
+for title in children:
+	temp = categories()
+	temp.title = title
+	temp.parent = parent
+	temp.save()
+
 
 
 comments = [
@@ -131,6 +153,3 @@ for i in range(len(comments)):
 	temp_comment.comment = comments[i][1]
 	temp_comment.event_id = event.objects.all().filter(title__icontains=comments[i][2]).first()
 	temp_comment.save()
-
-
-

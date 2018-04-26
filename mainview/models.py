@@ -54,11 +54,10 @@ class event (models.Model):
     lng = models.CharField(max_length=10)
     zipcode = models.CharField(max_length=10, default=16802)
     user_email = models.CharField(max_length=160)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_stamp = models.DateTimeField(auto_now_add=True)
     upvote_count = models.IntegerField(auto_created=0, default=0)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     categories = models.ManyToManyField(categories)
 
     class Meta:
