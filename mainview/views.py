@@ -67,7 +67,7 @@ def event_score(event, age, popularity, proximity, lat, lng, current_time):
     time_dif = time_dif
     upvotes = upvotes
 
-    return float(age * time_dif) + float(popularity * upvotes) + float(proximity * distance)
+    return float(age * -time_dif) + float(popularity * -upvotes) + float(proximity * distance)
 
 
 # 1: a greater
@@ -92,9 +92,9 @@ class EventAPIView(generics.ListAPIView):
                 cat_formated = cat.capitalize()
                 qs = qs.filter(categories__title=cat_formated)
 
-        age = self.request.GET.get("age")
-        popularity = self.request.GET.get("popularity")
-        proximity = self.request.GET.get("proximity")
+        age = int(self.request.GET.get("age"))
+        popularity = int(self.request.GET.get("popularity"))
+        proximity = int(self.request.GET.get("proximity"))
         lat = self.request.GET.get("lat")
         lng = self.request.GET.get("lng")
         current_time = int(round(time.time() * 1000))
