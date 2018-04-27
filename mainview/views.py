@@ -92,19 +92,25 @@ class EventAPIView(generics.ListAPIView):
                 cat_formated = cat.capitalize()
                 qs = qs.filter(categories__title=cat_formated)
 
-        age = int(self.request.GET.get("age"))
-        popularity = int(self.request.GET.get("popularity"))
-        proximity = int(self.request.GET.get("proximity"))
+        age = self.request.GET.get("age")
+        popularity = self.request.GET.get("popularity")
+        proximity = self.request.GET.get("proximity")
         lat = self.request.GET.get("lat")
         lng = self.request.GET.get("lng")
         current_time = int(round(time.time() * 1000))
 
         if (age is None):
             age = age_weight
+        else:
+            age = int(age)
         if (popularity is None):
             popularity = popularity_weight
+        else:
+            popularity = int(popularity)
         if (proximity is None):
             proximity = proximity_weight
+        else:
+            proximity = int(proximity)
 
         pk_list = [event.pk for event in
                    sorted(qs, key=lambda e: event_score(e, float(age), popularity, proximity, lat, lng, current_time))]
