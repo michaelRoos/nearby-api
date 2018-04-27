@@ -59,7 +59,7 @@ def event_score(event, age, popularity, proximity, lat, lng, current_time):
     if lat is None or lng is None:
         distance = 0
     else:
-        distance = math.sqrt((float(lat) - float(event.lat)) ** 2 + float(float(lng) - float(event.lng)) ** 2)
+        distance = math.sqrt(float((float(lat) - float(event.lat)) ** 2) + float(float(float(lng) - float(event.lng)) ** 2))
     time_dif = event.time_stamp.timestamp() - current_time
     upvotes = event.upvote_count
 
@@ -67,7 +67,7 @@ def event_score(event, age, popularity, proximity, lat, lng, current_time):
     time_dif = time_dif
     upvotes = upvotes
 
-    return age * time_dif + popularity * upvotes + proximity * distance
+    return float(age * time_dif) + float(popularity * upvotes) + float(proximity * distance)
 
 
 # 1: a greater
