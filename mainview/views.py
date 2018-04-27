@@ -20,8 +20,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 
 proximity_weight = 1
-popularity_weight = 1
-age_weight = 1
+popularity_weight = 0
+age_weight = 0
 
 
 class SignupAPIView(generics.ListAPIView, mixins.CreateModelMixin):
@@ -58,7 +58,7 @@ def event_score(event, age, popularity, proximity, lat, lng, current_time):
     if lat is None or lng is None:
         distance = 0
     else:
-        distance = math.sqrt((lat - float(event.lat)) ** 2 + float(lng - event.lng) ** 2)
+        distance = math.sqrt((float(lat) - float(event.lat)) ** 2 + float(float(lng) - float(event.lng)) ** 2)
     time_dif = event.time_stamp.timestamp() - current_time
     upvotes = event.upvote_count
 
