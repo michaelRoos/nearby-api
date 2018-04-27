@@ -30,6 +30,7 @@ APPEND_SLASH = True
 
 ALLOWED_HOSTS = []
 
+
 ALLOWED_HOSTS = ['ec2-18-188-184-129.us-east-2.compute.amazonaws.com', 'localhost', '127.0.0.1']
 
 CORS_ALLOW_CREDENTIALS = True
